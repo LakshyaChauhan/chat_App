@@ -60,7 +60,11 @@ class LoginScreen extends StatelessWidget {
                 obscureText: true),
             const SizedBox(height: 20),
             // sign in button
-            MyButton(onTap: () => login(context), text: 'Sign In'),
+            MyButton(
+                onTap: () {
+                  login(context);
+                },
+                text: 'Sign In'),
             const SizedBox(height: 30),
 
             Row(
