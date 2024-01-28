@@ -1,10 +1,11 @@
+import 'package:chat_app/auth/auth.services.dart';
 import 'package:chat_app/utils/myButton.dart';
 import 'package:chat_app/utils/custom_textField.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatelessWidget {
   final void Function() changeScreen;
-  const RegisterScreen({super.key,required this.changeScreen});
+  const RegisterScreen({super.key, required this.changeScreen});
 
   @override
   Widget build(BuildContext context) {
@@ -13,6 +14,37 @@ class RegisterScreen extends StatelessWidget {
     final TextEditingController passwordController = TextEditingController();
     final TextEditingController confirmPasswordController =
         TextEditingController();
+
+    // void signup method
+
+    void signup(BuildContext context) async {
+      final auth = AuthServices();
+
+      // if email and confirm password is same
+      if (passwordController.text == confirmPasswordController.text) {
+        try {
+          await auth.signUp(emailController.text, passwordController.text);
+          // good practice
+          if (!context.mounted) return;
+        } catch (e) {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text(e.toString()),
+            ),
+          );
+        }
+      }
+
+      // if not same
+      else {
+        showDialog(
+            context: context,
+            builder: (context) =>
+                const AlertDialog(title: Text('Passwords dont\'t match')));
+      }
+    }
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: Center(
@@ -53,7 +85,11 @@ class RegisterScreen extends StatelessWidget {
 
             const SizedBox(height: 20),
             // sign in button
-            MyButton(onTap: () {}, text: 'Sign Up'),
+            MyButton(
+                onTap: () {
+                  signup(context);
+                },
+                text: 'Sign Up'),
             const SizedBox(height: 30),
 
             Row(
