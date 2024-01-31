@@ -1,4 +1,4 @@
-import 'package:chat_app/auth/auth.services.dart';
+import 'package:chat_app/services/auth/auth.services.dart';
 import 'package:chat_app/screens/settings.dart';
 import 'package:flutter/material.dart';
 
@@ -45,9 +45,11 @@ class MyDrawer extends StatelessWidget {
                   title: const Text('S E T T I N G S'),
                   onTap: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const SettingsScreen()));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SettingsScreen(),
+                      ),
+                    );
                   },
                 ),
               )
@@ -57,12 +59,9 @@ class MyDrawer extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 25),
             child: ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text('L O G O U T'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
+                leading: const Icon(Icons.logout),
+                title: const Text('L O G O U T'),
+                onTap: logOut),
           )
         ],
       ),

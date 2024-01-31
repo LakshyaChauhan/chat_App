@@ -1,11 +1,19 @@
-import 'package:chat_app/auth/auth.services.dart';
+import 'package:chat_app/services/auth/auth.services.dart';
 import 'package:chat_app/utils/myButton.dart';
 import 'package:chat_app/utils/custom_textField.dart';
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   final void Function() changeScreen;
   const LoginScreen({super.key, required this.changeScreen});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  // void circular page loading
+  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +22,7 @@ class LoginScreen extends StatelessWidget {
     final TextEditingController passwordController = TextEditingController();
 
     // login function
-    void login(BuildContext context) async {
+    Future<void> login(BuildContext context) async {
       AuthServices authServices = AuthServices();
       try {
         await authServices.signInWithEmailAndPassword(
@@ -22,8 +30,13 @@ class LoginScreen extends StatelessWidget {
         if (!context.mounted) return;
       } catch (e) {
         showDialog(
-            context: context,
-            builder: (context) => AlertDialog(title: Text(e.toString())));
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text(
+              e.toString(),
+            ),
+          ),
+        );
       }
     }
 
@@ -61,8 +74,13 @@ class LoginScreen extends StatelessWidget {
             const SizedBox(height: 20),
             // sign in button
             MyButton(
-                onTap: () {
-                  login(context);
+                loading: loading,
+                onTap: () async {
+                  loading = true;
+                  setState(() {});
+                  await login(context);
+                  loading = false;
+                  setState(() {});
                 },
                 text: 'Sign In'),
             const SizedBox(height: 30),
@@ -76,7 +94,7 @@ class LoginScreen extends StatelessWidget {
                       TextStyle(color: Theme.of(context).colorScheme.primary),
                 ),
                 GestureDetector(
-                  onTap: changeScreen,
+                  onTap: widget.changeScreen,
                   child: Text(
                     'Sign Up',
                     style: TextStyle(

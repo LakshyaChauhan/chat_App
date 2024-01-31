@@ -1,12 +1,19 @@
-import 'package:chat_app/auth/auth.services.dart';
+import 'package:chat_app/services/auth/auth.services.dart';
 import 'package:chat_app/utils/myButton.dart';
 import 'package:chat_app/utils/custom_textField.dart';
 import 'package:flutter/material.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
   final void Function() changeScreen;
   const RegisterScreen({super.key, required this.changeScreen});
 
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
+  // void circular page loading
+  bool loading = false;
   @override
   Widget build(BuildContext context) {
     // controller for email and password
@@ -17,7 +24,7 @@ class RegisterScreen extends StatelessWidget {
 
     // void signup method
 
-    void signup(BuildContext context) async {
+    Future<void> signup(BuildContext context) async {
       final auth = AuthServices();
 
       // if email and confirm password is same
@@ -86,8 +93,13 @@ class RegisterScreen extends StatelessWidget {
             const SizedBox(height: 20),
             // sign in button
             MyButton(
-                onTap: () {
-                  signup(context);
+                loading: loading,
+                onTap: () async {
+                  loading = true;
+                  setState(() {});
+                  await signup(context);
+                  loading = false;
+                  setState(() {});
                 },
                 text: 'Sign Up'),
             const SizedBox(height: 30),
@@ -101,7 +113,7 @@ class RegisterScreen extends StatelessWidget {
                       TextStyle(color: Theme.of(context).colorScheme.primary),
                 ),
                 GestureDetector(
-                  onTap: changeScreen,
+                  onTap: widget.changeScreen,
                   child: Text(
                     'Sign in',
                     style: TextStyle(
