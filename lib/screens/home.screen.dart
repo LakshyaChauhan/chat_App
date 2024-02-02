@@ -14,8 +14,13 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        title: Text(
+          'Chat App',
+          style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
+        ),
+        backgroundColor: Theme.of(context).colorScheme.onBackground,
       ),
       drawer: const MyDrawer(),
       body: _builUnderList(),

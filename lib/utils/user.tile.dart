@@ -9,12 +9,13 @@ class UserTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
+      
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
         child: Container(
           padding: const EdgeInsets.all(25),
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.secondary,
+            color: Theme.of(context).colorScheme.background,
             // color: Colors.red,
             borderRadius: BorderRadius.circular(10),
           ),

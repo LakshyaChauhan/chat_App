@@ -9,13 +9,12 @@ class ChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: Theme.of(context).colorScheme.onBackground,
+        // leading: const Icon(Icons.person),
         title: Row(
           children: [
             const Icon(Icons.person),
-            const SizedBox(
-              width: 10,
-            ),
+            const SizedBox(width: 10),
             //email
             Text(emailUser),
           ],
@@ -28,8 +27,7 @@ class ChatScreen extends StatelessWidget {
           // a list view where messages will be shown
 
           // we will have the text field and button to send the message
-           MessageForm(),
-          
+          MessageForm(),
         ],
       ),
     );
