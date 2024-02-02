@@ -18,6 +18,7 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       drawer: const MyDrawer(),
+      body: _builUnderList(),
     );
   }
 
@@ -56,7 +57,15 @@ class HomeScreen extends StatelessWidget {
     return UserTile(
       text: userData['email'],
       onTap: () {
-        MaterialPageRoute(builder: (context) =>  ChatScreen(emailUser: userData['email'],));
+        print('running this function ${userData['email']}');
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ChatScreen(
+              emailUser: userData['email'],
+            ),
+          ),
+        );
       },
     );
   }
