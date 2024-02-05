@@ -1,6 +1,6 @@
 import 'package:chat_app/services/auth/auth.services.dart';
-import 'package:chat_app/utils/myButton.dart';
-import 'package:chat_app/utils/custom_textField.dart';
+import 'package:chat_app/utils/common/myButton.dart';
+import 'package:chat_app/utils/common/custom_textField.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatefulWidget {

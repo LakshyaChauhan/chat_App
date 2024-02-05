@@ -1,7 +1,7 @@
 import 'package:chat_app/screens/chat_screen.dart';
 import 'package:chat_app/services/auth/auth.services.dart';
 import 'package:chat_app/services/chat/chat.services.dart';
-import 'package:chat_app/utils/my.drawer.dart';
+import 'package:chat_app/utils/common/my.drawer.dart';
 import 'package:chat_app/utils/user.tile.dart';
 import 'package:flutter/material.dart';
 
@@ -44,7 +44,6 @@ class HomeScreen extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           }
-
           // return List view
           return ListView(
             children: snapshot.data!
