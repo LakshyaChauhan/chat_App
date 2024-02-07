@@ -21,7 +21,7 @@ class MessageBox extends StatelessWidget {
       ),
       // color: const Color.fromARGB(255, 140, 182, 218),
       child: const Text(
-        'hello dear',
+        'hello dear ',
         style: TextStyle(fontSize: 17),
       ),
     );

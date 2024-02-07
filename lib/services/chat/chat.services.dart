@@ -1,3 +1,4 @@
+import 'package:chat_app/models/message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -18,5 +19,46 @@ class ChatServices {
         return user;
       }).toList();
     });
+  }
+
+  // send messages between two users
+  Future<void> sendMessage(String recieverId, String message) async {
+    // get the user info
+    final String currentUserId = firebaseAuth.currentUser!.uid;
+    final String currentUserMail = firebaseAuth.currentUser!.email!;
+    final Timestamp timestamps = Timestamp.now();
+
+    // create a new message
+    Message newMessage = Message(
+        senderID: currentUserId,
+        senderEmail: currentUserMail,
+        recieverId: recieverId,
+        message: message,
+        timestamp: timestamps);
+
+    // create a chat room for two users
+    List<String> ids = [currentUserId, recieverId];
+    ids.sort();
+    String chatRoomId = ids.join('_');
+    firestore
+        .collection('ChatRooms')
+        .doc(chatRoomId)
+        .collection('messages')
+        .add(newMessage.toMap());
+    // add new message to database
+  }
+
+  // get the message
+  Stream<QuerySnapshot> getMessages(String userId, String recieverId) {
+    //construct chatroom id
+    List<String> ids = [userId, recieverId];
+    String chatRoomId = ids.join('_');
+
+    return firestore
+        .collection('ChatRooms')
+        .doc(chatRoomId)
+        .collection('messages')
+        .orderBy('timestamp', descending: false)
+        .snapshots();
   }
 }

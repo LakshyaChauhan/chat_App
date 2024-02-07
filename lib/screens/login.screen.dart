@@ -15,12 +15,18 @@ class _LoginScreenState extends State<LoginScreen> {
   // void circular page loading
   bool loading = false;
 
+  // controller for email and password
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // controller for email and password
-    final TextEditingController emailController = TextEditingController();
-    final TextEditingController passwordController = TextEditingController();
-
     // login function
     Future<void> login(BuildContext context) async {
       AuthServices authServices = AuthServices();

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 class MessageForm extends StatelessWidget {
-  const MessageForm({super.key});
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController controller;
+  final Function() sendMessage;
 
+  MessageForm({super.key, required this.controller, required this.sendMessage});
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     return Align(
       alignment: Alignment.bottomLeft,
       child: Row(
@@ -16,6 +18,7 @@ class MessageForm extends StatelessWidget {
               child: SingleChildScrollView(
                 padding: const EdgeInsets.only(left: 8.0, bottom: 8),
                 child: TextFormField(
+                  controller: controller,
                   maxLines: null,
                   validator: (value) {
                     if (value == null || value.isEmpty || value.trim() == '') {
@@ -43,8 +46,9 @@ class MessageForm extends StatelessWidget {
           // Button to send the message
           TextButton(
             onPressed: () {
-              if (_formKey.currentState!.mounted) {
+              if (_formKey.currentState!.validate()) {
                 // here we will have a function of our sending the text
+                sendMessage();
               }
             },
             child: TextButton(
