@@ -1,4 +1,4 @@
-import 'package:chat_app/screens/chat_screen.dart';
+import 'package:chat_app/screens/chat/chat_screen.dart';
 import 'package:chat_app/services/auth/auth.services.dart';
 import 'package:chat_app/services/chat/chat.services.dart';
 import 'package:chat_app/utils/common/my.drawer.dart';
@@ -61,7 +61,7 @@ class HomeScreen extends StatelessWidget {
     return UserTile(
       text: userData['email'],
       onTap: () {
-        print('running this function ${userData['email']}');
+        print(userData['uid']);
         Navigator.push(
           context,
           MaterialPageRoute(

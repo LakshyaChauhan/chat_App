@@ -40,7 +40,9 @@ class ChatServices {
     List<String> ids = [currentUserId, recieverId];
     ids.sort();
     String chatRoomId = ids.join('_');
-    firestore
+
+    print('send message :  $chatRoomId');
+    await firestore
         .collection('ChatRooms')
         .doc(chatRoomId)
         .collection('messages')
@@ -52,8 +54,9 @@ class ChatServices {
   Stream<QuerySnapshot> getMessages(String userId, String recieverId) {
     //construct chatroom id
     List<String> ids = [userId, recieverId];
+    ids.sort();
     String chatRoomId = ids.join('_');
-
+    print('get messages id $chatRoomId');
     return firestore
         .collection('ChatRooms')
         .doc(chatRoomId)
