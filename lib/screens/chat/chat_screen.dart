@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:chat_app/services/chat/chat.services.dart';
+import 'package:chat_app/utils/messageBox.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -36,7 +37,7 @@ class _ChatScreenState extends State<ChatScreen> {
       if (myFocusNode.hasFocus) {
         Future.delayed(
           const Duration(
-            milliseconds: 50,
+            milliseconds: 30,
           ),
           () => scrollDown(),
         );
@@ -73,7 +74,7 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.onBackground,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         // leading: const Icon(Icons.person),
         title: Row(
           children: [
@@ -86,7 +87,6 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
       body: Column(
         children: [
-          // const MessageBox(),
           Expanded(child: _buildMessageList()),
           // a list view where messages will be shown
 
@@ -107,7 +107,7 @@ class _ChatScreenState extends State<ChatScreen> {
     print(widget.userId);
     return StreamBuilder<QuerySnapshot>(
         stream: _chatServices.getMessages(senderId, widget.userId),
-        builder: (context, snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return const Center(
               child: CircularProgressIndicator(),
@@ -126,9 +126,11 @@ class _ChatScreenState extends State<ChatScreen> {
                 .map((DocumentSnapshot document) {
                   Map<String, dynamic> data =
                       document.data()! as Map<String, dynamic>;
-                  return ListTile(
-                    title: Text(data['message']),
-                  );
+                  print(data);
+                  return MessageBox(data: data);
+                  // return ListTile(
+                  //   title: Text(data['timestamp'].toString()),
+                  // );
                 })
                 .toList()
                 .cast(),

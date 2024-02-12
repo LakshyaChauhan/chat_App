@@ -20,7 +20,7 @@ class HomeScreen extends StatelessWidget {
           'Chat App',
           style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
         ),
-        backgroundColor: Theme.of(context).colorScheme.onBackground,
+        backgroundColor:     Theme.of(context).colorScheme.primary,
       ),
       drawer: const MyDrawer(),
       body: _builUnderList(),
