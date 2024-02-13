@@ -54,14 +54,15 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
             // iCon of the app
             Icon(Icons.message,
-                size: 60, color: Theme.of(context).colorScheme.primary),
+                size: 60, color: Theme.of(context).colorScheme.inversePrimary),
             const SizedBox(height: 50),
 
             // text of welcome
             Text(
               'Welcome , We hope you enjoy chatting.',
               style: TextStyle(
-                  color: Theme.of(context).colorScheme.primary, fontSize: 16),
+                  color: Theme.of(context).colorScheme.inversePrimary,
+                  fontSize: 16),
             ),
 
             const SizedBox(height: 25),
@@ -96,15 +97,15 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 Text(
                   'Already have an account ? ',
-                  style:
-                      TextStyle(color: Theme.of(context).colorScheme.primary),
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.inversePrimary),
                 ),
                 GestureDetector(
                   onTap: widget.changeScreen,
                   child: Text(
                     'Sign Up',
                     style: TextStyle(
-                        color: Theme.of(context).colorScheme.primary,
+                        color: Theme.of(context).colorScheme.inversePrimary,
                         fontSize: 16,
                         fontWeight: FontWeight.bold),
                   ),

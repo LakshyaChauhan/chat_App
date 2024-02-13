@@ -16,7 +16,6 @@ class CustomTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25),
       child: TextField(
-        
         decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
               borderSide:
@@ -28,8 +27,8 @@ class CustomTextField extends StatelessWidget {
             fillColor: Theme.of(context).colorScheme.secondary,
             filled: true,
             hintText: hintText,
-            
-            ),
+            hintStyle:
+                TextStyle(color: Theme.of(context).colorScheme.inversePrimary)),
         obscureText: obscureText,
         controller: controller,
       ),
