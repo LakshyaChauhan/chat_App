@@ -13,9 +13,10 @@ Future<void> main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await themeProvider.loadThemeMode();
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => themeProvider,
-      child: const MyApp(),
+    MultiProvider(providers: [
+      ChangeNotifierProvider(create: (context) => themeProvider),
+    ],
+    child: const MyApp(),
     ),
   );
 }

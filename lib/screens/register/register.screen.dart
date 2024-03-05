@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:chat_app/models/user_model.dart';
 import 'package:flutter/material.dart';
 
 import 'package:chat_app/services/auth/auth.services.dart';
@@ -22,18 +23,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
   File? _imageFile;
   // function to pick image from gallery
   void _pickImage() async {
-    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (image != null) {
-      setState(() {
-        _imageFile = File(image.path);
-      });
-    }
+    final imageFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    setState(() {
+      if (imageFile != null) {
+        _imageFile = File(imageFile.path);
+      }
+    });
     print(_imageFile);
   }
 
   // controller for email and password
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController userNameController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
 
@@ -42,6 +46,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     emailController.dispose();
     passwordController.dispose();
     confirmPasswordController.dispose();
+    userNameController.dispose();
+    nameController.dispose();
     super.dispose();
   }
 
@@ -51,7 +57,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
     // if email and confirm password is same
     if (passwordController.text == confirmPasswordController.text) {
       try {
-        await auth.signUp(emailController.text, passwordController.text);
+        await auth.signUp(
+            UserModel(
+                name: nameController.text,
+                userName: userNameController.text,
+                email: emailController.text,
+                isOnline: false,
+                profilePic: _imageFile != null ? _imageFile!.path : 'null'),
+            passwordController.text);
         // good practice
         if (!context.mounted) return;
       } catch (e) {
@@ -75,7 +88,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // void signup metho
+    // void signup method
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
@@ -87,42 +100,43 @@ class _RegisterScreenState extends State<RegisterScreen> {
             children: [
               GestureDetector(
                 onTap: _pickImage,
-                child: Stack(
-                  alignment: Alignment.bottomRight,
-                  children: [
-                    CircleAvatar(
-                        radius: 100,
-                        child: _imageFile == null
-                            ? const Icon(
-                                Icons.person,
-                                size: 150,
-                              )
-                            : null),
-                    Icon(
-                      Icons.add,
-                      color: Theme.of(context).colorScheme.primary,
-                      size: 40,
-                    )
-                  ],
+                child: CircleAvatar(
+                  radius: 100.0,
+                  backgroundImage:
+                      _imageFile != null ? FileImage(_imageFile!) : null,
+                  backgroundColor: Colors.grey,
+                  child: _imageFile == null
+                      ? const Icon(
+                          Icons.person,
+                          size: 100,
+                        )
+                      : null,
                 ),
-              ), //Image.file(),),
+              ),
 
               const SizedBox(height: 20),
-              // iCon of the app
-
-              // Icon(Icons.message,
-              //     size: 60, color: Theme.of(context).colorScheme.inversePrimary),
-              // const SizedBox(height: 50),
 
               // text of welcome
               Text(
-                'Welcome , We hope you enjoy chatting.',
+                'Add Profile Picture.',
                 style: TextStyle(
                     color: Theme.of(context).colorScheme.onSecondary,
                     fontSize: 16),
               ),
 
               const SizedBox(height: 25),
+              // user name
+              CustomTextField(
+                  controller: userNameController,
+                  hintText: 'Username',
+                  obscureText: false),
+              const SizedBox(height: 10),
+              // for name
+              CustomTextField(
+                  controller: nameController,
+                  hintText: 'Name',
+                  obscureText: false),
+              const SizedBox(height: 10),
               // custom text field for email
               CustomTextField(
                   controller: emailController,

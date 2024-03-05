@@ -32,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
       AuthServices authServices = AuthServices();
       try {
         await authServices.signInWithEmailAndPassword(
-            emailController.text, passwordController.text);
+            emailController.text, passwordController.text,context);
         if (!context.mounted) return;
       } catch (e) {
         showDialog(
