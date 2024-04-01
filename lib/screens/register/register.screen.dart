@@ -63,7 +63,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 userName: userNameController.text,
                 email: emailController.text,
                 isOnline: false,
-                profilePic: _imageFile != null ? _imageFile!.path : 'null'),
+                profilePic: _imageFile != null ? _imageFile!.path : ''),
             passwordController.text);
         // good practice
         if (!context.mounted) return;

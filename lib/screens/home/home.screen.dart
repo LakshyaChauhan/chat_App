@@ -20,7 +20,7 @@ class HomeScreen extends StatelessWidget {
           'Chat App',
           style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
         ),
-        backgroundColor:     Theme.of(context).colorScheme.primary,
+        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       drawer: const MyDrawer(),
       body: _builUnderList(),
@@ -44,7 +44,7 @@ class HomeScreen extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           }
-          // return List view
+          // return ListView
           return ListView(
             children: snapshot.data!
                 .map<Widget>(
@@ -59,9 +59,9 @@ class HomeScreen extends StatelessWidget {
       Map<String, dynamic> userData, BuildContext context) {
     //display all users except current user
     return UserTile(
-      text: userData['email'],
+      text: userData['userName'],
+      profilePic: userData['profilePic'],
       onTap: () {
-        print(userData['uid']);
         Navigator.push(
           context,
           MaterialPageRoute(

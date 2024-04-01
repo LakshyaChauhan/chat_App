@@ -106,7 +106,7 @@ class _ChatScreenState extends State<ChatScreen> {
     print(senderId);
     print(widget.userId);
     return StreamBuilder<QuerySnapshot>(
-        stream: _chatServices.getMessages(senderId, widget.userId),
+        stream: _chatServices.getInitialMessages(senderId, widget.userId),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return const Center(

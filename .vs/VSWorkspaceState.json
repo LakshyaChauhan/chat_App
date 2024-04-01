@@ -1,0 +1,10 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\lib",
+    "\\lib\\services",
+    "\\lib\\services\\auth"
+  ],
+  "SelectedNode": "\\lib\\services\\auth\\auth.gate.dart",
+  "PreviewInSolutionExplorer": false
+}

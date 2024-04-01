@@ -2,16 +2,21 @@ import 'package:chat_app/services/auth/auth.services.dart';
 import 'package:chat_app/screens/settings.dart';
 import 'package:flutter/material.dart';
 
-class MyDrawer extends StatelessWidget {
+class MyDrawer extends StatefulWidget {
   const MyDrawer({super.key});
 
-  void logOut(BuildContext context) {
-    final authService = AuthServices();
-    authService.signOut(context);
-  }
+  @override
+  State<MyDrawer> createState() => _MyDrawerState();
+}
 
+class _MyDrawerState extends State<MyDrawer> {
   @override
   Widget build(BuildContext context) {
+    void logOut() {
+      final authService = AuthServices();
+      authService.signOut();
+    }
+
     return Drawer(
       backgroundColor: Theme.of(context).colorScheme.background,
       child: Column(
@@ -62,7 +67,8 @@ class MyDrawer extends StatelessWidget {
                 leading: const Icon(Icons.logout),
                 title: const Text('L O G O U T'),
                 onTap: () {
-                  logOut(context);
+                  // print(Provider.of<UserProvider>(context, listen: false).user);
+                  logOut();
                 }),
           )
         ],
