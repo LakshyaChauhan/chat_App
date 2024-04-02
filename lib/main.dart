@@ -1,3 +1,4 @@
+import 'package:chat_app/screens/provider/user_provider.dart';
 import 'package:chat_app/services/auth/auth.gate.dart';
 import 'package:chat_app/firebase_options.dart';
 import 'package:chat_app/themes/dark.mode.dart';
@@ -13,10 +14,15 @@ Future<void> main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await themeProvider.loadThemeMode();
   runApp(
-    MultiProvider(providers: [
-      ChangeNotifierProvider(create: (context) => themeProvider),
-    ],
-    child: const MyApp(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => themeProvider),
+        ChangeNotifierProvider<UserProvider>(
+          create: (context) => UserProvider()..getUserFromSharedPreferences(),
+          lazy: true,
+        )
+      ],
+      child: const MyApp(),
     ),
   );
 }

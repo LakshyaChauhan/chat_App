@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:chat_app/models/user_model.dart';
 import 'package:chat_app/utils/shared_pref.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,17 +12,29 @@ class AuthServices {
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
-  Future<void> signInWithEmailAndPassword(
+  Future<UserModel?> signInWithEmailAndPassword(
       String email, String password, BuildContext context) async {
     bool emailAlreadyExist = await checkEmailExsist(email);
-    if (emailAlreadyExist) {
+    if (!emailAlreadyExist) {
       try {
         UserCredential userCredential = await _auth.signInWithEmailAndPassword(
             email: email, password: password);
+
         await _firebaseFirestore
             .collection('Users')
             .doc(userCredential.user!.uid)
             .update({'isOnline': true});
+
+        final docRef = _firebaseFirestore
+            .collection('Users')
+            .doc(userCredential.user!.uid);
+        final docsnapshot = await docRef.get();
+        if (docsnapshot.exists) {
+          final map = docsnapshot.data() as Map<String, dynamic>;
+          return UserModel.fromMap(map);
+        } else {
+          return null;
+        }
       } on FirebaseAuthException catch (e) {
         print(
             'The error is in the authentication login section of the program');
@@ -35,7 +46,7 @@ class AuthServices {
   }
 
   // sign up or register
-  Future<UserCredential> signUp(UserModel userModel, String password) async {
+  Future<UserModel> signUp(UserModel userModel, String password) async {
     final sharedPreferences = SharedPref();
     try {
       UserCredential userCredential =
@@ -53,13 +64,14 @@ class AuthServices {
           isOnline: userModel.isOnline,
           profilePic: url != null ? url : userModel.profilePic,
           uid: userCredential.user!.uid);
+
       await _firebaseFirestore
           .collection('Users')
           .doc(userCredential.user!.uid)
           .set(newModel.toMap());
       await sharedPreferences.saveUser(newModel);
 
-      return userCredential;
+      return newModel;
     } on FirebaseAuthException catch (e) {
       print('Error in signup method in AuthServices.dart file');
       throw Exception(e.code);

@@ -1,11 +1,13 @@
 import 'dart:io';
 import 'package:chat_app/models/user_model.dart';
+import 'package:chat_app/screens/provider/user_provider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:chat_app/services/auth/auth.services.dart';
 import 'package:chat_app/utils/common/myButton.dart';
 import 'package:chat_app/utils/common/custom_textField.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
   final void Function() changeScreen;
@@ -57,7 +59,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     // if email and confirm password is same
     if (passwordController.text == confirmPasswordController.text) {
       try {
-        await auth.signUp(
+        final UserModel user = await auth.signUp(
             UserModel(
                 name: nameController.text,
                 userName: userNameController.text,
@@ -67,6 +69,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             passwordController.text);
         // good practice
         if (!context.mounted) return;
+        Provider.of<UserProvider>(context, listen: false).setUser(user);
       } catch (e) {
         showDialog(
           context: context,

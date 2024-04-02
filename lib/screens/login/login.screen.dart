@@ -1,7 +1,10 @@
+import 'package:chat_app/models/user_model.dart';
+import 'package:chat_app/screens/provider/user_provider.dart';
 import 'package:chat_app/services/auth/auth.services.dart';
 import 'package:chat_app/utils/common/myButton.dart';
 import 'package:chat_app/utils/common/custom_textField.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   final void Function() changeScreen;
@@ -31,9 +34,10 @@ class _LoginScreenState extends State<LoginScreen> {
     Future<void> login(BuildContext context) async {
       AuthServices authServices = AuthServices();
       try {
-        await authServices.signInWithEmailAndPassword(
+        UserModel? userData = await authServices.signInWithEmailAndPassword(
             emailController.text, passwordController.text, context);
         if (!context.mounted) return;
+        Provider.of<UserProvider>(context, listen: false).setUser(userData);
       } catch (e) {
         showDialog(
           context: context,
