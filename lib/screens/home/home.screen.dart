@@ -1,15 +1,33 @@
 import 'package:chat_app/screens/chat/chat_screen.dart';
+import 'package:chat_app/screens/provider/user_provider.dart';
 import 'package:chat_app/services/auth/auth.services.dart';
 import 'package:chat_app/services/chat/chat.services.dart';
 import 'package:chat_app/utils/common/my.drawer.dart';
 import 'package:chat_app/utils/user.tile.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   final ChatServices chatServices = ChatServices();
+
   final AuthServices authServices = AuthServices();
+  @override
+  void initState() {
+    initializeSharedPrefs();
+    super.initState();
+  }
+
+  void initializeSharedPrefs() async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    await userProvider.getUserFromSharedPreferences();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,10 +84,9 @@ class HomeScreen extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => ChatScreen(
-              userId: userData['uid'],
-              userName: userData['userName'],
-              profilePic: userData['profilePic']
-            ),
+                userId: userData['uid'],
+                userName: userData['userName'],
+                profilePic: userData['profilePic']),
           ),
         );
       },

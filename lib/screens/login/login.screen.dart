@@ -37,7 +37,9 @@ class _LoginScreenState extends State<LoginScreen> {
         UserModel? userData = await authServices.signInWithEmailAndPassword(
             emailController.text, passwordController.text, context);
         if (!context.mounted) return;
-        Provider.of<UserProvider>(context, listen: false).setUser(userData);
+        if (userData != null) {
+          Provider.of<UserProvider>(context, listen: false).setUser(userData);
+        }
       } catch (e) {
         showDialog(
           context: context,

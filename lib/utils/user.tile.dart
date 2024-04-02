@@ -43,7 +43,7 @@ class UserTile extends StatelessWidget {
                   child: CachedNetworkImage(
                     imageBuilder: (context, imageProvider) => Container(
                       decoration: BoxDecoration(
-                          shape: BoxShape.circle,
+                          shape: BoxShape.circle, 
                           image: DecorationImage(
                               image: imageProvider, fit: BoxFit.cover)),
                     ),

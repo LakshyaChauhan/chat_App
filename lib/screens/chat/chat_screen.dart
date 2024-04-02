@@ -164,7 +164,6 @@ class _ChatScreenState extends State<ChatScreen> {
                   (DocumentSnapshot document) {
                     Map<String, dynamic> data =
                         document.data()! as Map<String, dynamic>;
-                    print(data);
                     return MessageBox(data: data);
                   },
                 )

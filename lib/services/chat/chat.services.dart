@@ -15,7 +15,6 @@ class ChatServices {
           .map((doc) {
         // got through each individual user
         final user = doc.data();
-        print(user);
         return user;
       }).toList();
     });

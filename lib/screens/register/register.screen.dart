@@ -32,7 +32,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         _imageFile = File(imageFile.path);
       }
     });
-    print(_imageFile);
   }
 
   // controller for email and password
