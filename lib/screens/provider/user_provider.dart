@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 class UserProvider extends ChangeNotifier {
   UserModel? _user;
   UserModel?get user => _user;
-  set user(UserModel? newUser) {
+  void updateser(UserModel? newUser) {
     _user = newUser;
     notifyListeners();
   }

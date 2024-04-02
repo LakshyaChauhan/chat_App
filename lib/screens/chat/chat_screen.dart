@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chat_app/services/chat/chat.services.dart';
 import 'package:chat_app/utils/messageBox.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,14 +8,15 @@ import 'package:flutter/material.dart';
 import 'package:chat_app/utils/messag_form.dart';
 
 class ChatScreen extends StatefulWidget {
-  final String emailUser;
+  final String userName;
   final String userId;
+  final String profilePic;
 
-  const ChatScreen({
-    super.key,
-    required this.emailUser,
-    required this.userId,
-  });
+  const ChatScreen(
+      {super.key,
+      required this.userName,
+      required this.userId,
+      required this.profilePic});
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -61,13 +63,15 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void sendMessage() async {
-    // check if there is someting inside textController
-    if (_messageController.text.isNotEmpty) {
-      await _chatServices.sendMessage(widget.userId, _messageController.text);
-    }
-    // clear text controller
+    String? text = _messageController.text.toString();
     _messageController.clear();
     scrollDown();
+
+    // check if there is someting inside textController
+    if (text.trim() != '') {
+      await _chatServices.sendMessage(widget.userId, text);
+    }
+    // clear text controller
   }
 
   @override
@@ -78,23 +82,58 @@ class _ChatScreenState extends State<ChatScreen> {
         // leading: const Icon(Icons.person),
         title: Row(
           children: [
-            const Icon(Icons.person),
+            CachedNetworkImage(
+              imageBuilder: (context, imageProvider) => Container(
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                        image: imageProvider, fit: BoxFit.cover)),
+              ),
+              imageUrl: widget.profilePic,
+              // placeholder: (context, url) => CircularProgressIndicator(),
+              errorWidget: (context, url, error) => const CircleAvatar(
+                radius: 20,
+                backgroundColor: Colors.black38,
+                child: Icon(
+                  Icons.person,
+                  size: 40,
+                ),
+              ),
+            ),
+
             const SizedBox(width: 10),
             //email
-            Text(widget.emailUser),
+            Text(
+              widget.userName,
+            ),
           ],
         ),
       ),
-      body: Column(
+      body: Stack(
         children: [
-          Expanded(child: _buildMessageList()),
-          // a list view where messages will be shown
+          // Background image (place your desired asset here)
+          SizedBox(
+            width: double.infinity,
+            height: double.infinity,
+            child: Image.asset(
+              'assets/images/new.jpeg', // Replace with your image path
+              fit: BoxFit.cover,
+            ),
+          ),
+          // Chat content (messages and message form)
+          Positioned.fill(
+            child: Column(
+              children: [
+                Expanded(child: _buildMessageList()),
+                // a list view where messages will be shown
 
-          // we will have the text field and button to send the message
-          MessageForm(
-            controller: _messageController,
-            sendMessage: sendMessage,
-            focusNode: myFocusNode,
+                MessageForm(
+                  controller: _messageController,
+                  sendMessage: sendMessage,
+                  focusNode: myFocusNode,
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -103,8 +142,6 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Widget _buildMessageList() {
     String senderId = _chatServices.firebaseAuth.currentUser!.uid;
-    print(senderId);
-    print(widget.userId);
     return StreamBuilder<QuerySnapshot>(
         stream: _chatServices.getInitialMessages(senderId, widget.userId),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -123,15 +160,14 @@ class _ChatScreenState extends State<ChatScreen> {
           return ListView(
             controller: _scrollController,
             children: snapshot.data!.docs
-                .map((DocumentSnapshot document) {
-                  Map<String, dynamic> data =
-                      document.data()! as Map<String, dynamic>;
-                  print(data);
-                  return MessageBox(data: data);
-                  // return ListTile(
-                  //   title: Text(data['timestamp'].toString()),
-                  // );
-                })
+                .map(
+                  (DocumentSnapshot document) {
+                    Map<String, dynamic> data =
+                        document.data()! as Map<String, dynamic>;
+                    print(data);
+                    return MessageBox(data: data);
+                  },
+                )
                 .toList()
                 .cast(),
           );

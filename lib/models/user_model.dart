@@ -7,7 +7,7 @@ class UserModel {
   final String name;
   final String? profilePic;
   final String email;
-  final bool  isOnline;
+  final bool isOnline;
   UserModel({
     this.uid,
     required this.userName,
@@ -21,14 +21,14 @@ class UserModel {
     return <String, dynamic>{
       'uid': uid,
       'userName': userName,
-      'name':name,
+      'name': name,
       'profilePic': profilePic,
       'email': email,
       'isOnline': isOnline,
     };
   }
 
-  factory UserModel.fromMap( Map<String, dynamic> map) {
+  factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
       uid: map['uid'] != null ? map['uid'] as String : null,
       userName: map['userName'] as String,
@@ -44,4 +44,6 @@ class UserModel {
 
   factory UserModel.fromJson(String source) =>
       UserModel.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  
 }

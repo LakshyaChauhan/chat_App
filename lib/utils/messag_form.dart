@@ -4,13 +4,23 @@ class MessageForm extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController controller;
   final Function() sendMessage;
+  // final Function() scrollDown;
   final FocusNode? focusNode;
 
   MessageForm(
       {super.key,
       required this.controller,
       required this.sendMessage,
+      // required this.scrollDown,
       this.focusNode});
+
+  final ScrollController _scrollController = ScrollController();
+
+  void scrollDown() {
+    _scrollController.animateTo(_scrollController.position.maxScrollExtent,
+        duration: const Duration(seconds: 5), curve: Curves.fastOutSlowIn);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -21,7 +31,7 @@ class MessageForm extends StatelessWidget {
             child: SingleChildScrollView(
               padding: const EdgeInsets.only(left: 8.0, bottom: 8),
               child: TextFormField(
-                focusNode: focusNode,
+                // focusNode: focusNode,
                 controller: controller,
                 maxLines: null,
                 keyboardType: TextInputType.emailAddress,

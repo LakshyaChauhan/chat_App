@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:chat_app/screens/chat/full_screen_image.dart';
 import 'package:flutter/material.dart';
 
 class UserTile extends StatelessWidget {
@@ -15,9 +17,9 @@ class UserTile extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+        padding: const EdgeInsets.symmetric(horizontal: 5),
         child: Container(
-          padding: const EdgeInsets.all(25),
+          padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.background,
             // color: Colors.red,
@@ -26,20 +28,38 @@ class UserTile extends StatelessWidget {
           child: Row(
             children: [
               //icons or image
-              profilePic == ''
-                  ? const CircleAvatar(
-                      radius: 30,
+              GestureDetector(
+                onTap: () {
+                  if (profilePic != '') {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                FullScreenImage(imageUrl: profilePic)));
+                  }
+                },
+                child: CircleAvatar(
+                  radius: 30,
+                  child: CachedNetworkImage(
+                    imageBuilder: (context, imageProvider) => Container(
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                              image: imageProvider, fit: BoxFit.cover)),
+                    ),
+                    imageUrl: profilePic,
+                    // placeholder: (context, url) => CircularProgressIndicator(),
+                    errorWidget: (context, url, error) => const CircleAvatar(
+                      radius: 20,
                       backgroundColor: Colors.black38,
                       child: Icon(
                         Icons.person,
                         size: 40,
                       ),
-                    )
-                  : CircleAvatar(
-                      radius: 30,
-                      backgroundImage: NetworkImage(profilePic),
-                      backgroundColor: Colors.black38,
                     ),
+                  ),
+                ),
+              ),
               const SizedBox(width: 20),
               // email
               Text(text),

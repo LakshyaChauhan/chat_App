@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:chat_app/models/user_model.dart';
+import 'package:chat_app/utils/shared_pref.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -35,6 +36,7 @@ class AuthServices {
 
   // sign up or register
   Future<UserCredential> signUp(UserModel userModel, String password) async {
+    final sharedPreferences = SharedPref();
     try {
       UserCredential userCredential =
           await _auth.createUserWithEmailAndPassword(
@@ -55,6 +57,8 @@ class AuthServices {
           .collection('Users')
           .doc(userCredential.user!.uid)
           .set(newModel.toMap());
+      await sharedPreferences.saveUser(newModel);
+
       return userCredential;
     } on FirebaseAuthException catch (e) {
       print('Error in signup method in AuthServices.dart file');
