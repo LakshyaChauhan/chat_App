@@ -1,9 +1,8 @@
 import 'package:chat_app/screens/chat/chat_screen.dart';
-import 'package:chat_app/screens/provider/user_provider.dart';
+import 'package:chat_app/screens/home/posts/posts_screen.dart';
 import 'package:chat_app/screens/home/profile_screen.dart';
 import 'package:chat_app/utils/custom_nav_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -17,22 +16,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final List<Widget> _pages = [
     const ChatScreen(),
-    const Center(
-      child: Text('kamehameha'),
-    ),
+    const PostsScreen(),
     const ProfileScreen()
   ];
 
-  @override
-  void initState() {
-    initializeSharedPrefs();
-    super.initState();
-  }
-
-  void initializeSharedPrefs() async {
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
-    await userProvider.getUserFromSharedPreferences();
-  }
+  
 
   @override
   Widget build(BuildContext context) {
