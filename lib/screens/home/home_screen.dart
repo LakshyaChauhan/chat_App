@@ -1,4 +1,5 @@
 import 'package:chat_app/screens/chat/chat_screen.dart';
+import 'package:chat_app/screens/home/posts/post_upload_screen.dart';
 import 'package:chat_app/screens/home/posts/posts_screen.dart';
 import 'package:chat_app/screens/home/profile_screen.dart';
 import 'package:chat_app/utils/custom_nav_bar.dart';
@@ -17,10 +18,9 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _pages = [
     const ChatScreen(),
     const PostsScreen(),
+    const PostUploadScreen(),
     const ProfileScreen()
   ];
-
-  
 
   @override
   Widget build(BuildContext context) {

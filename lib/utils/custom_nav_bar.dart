@@ -9,7 +9,7 @@ class CustomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<int> array = [0, 0, 0];
- 
+
     return Container(
       padding: const EdgeInsets.all(10),
       height: 56,
@@ -50,6 +50,15 @@ class CustomNavBar extends StatelessWidget {
           IconButton(
             onPressed: () {
               changeIndex(2);
+            },
+            icon: const Icon(
+              Icons.add,
+              color: Colors.white54,
+            ),
+          ),
+          IconButton(
+            onPressed: () {
+              changeIndex(3);
             },
             icon: const Icon(
               Icons.person,

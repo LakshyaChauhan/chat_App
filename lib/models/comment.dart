@@ -20,7 +20,7 @@ class Comment {
   }
 
   factory Comment.fromMap(Map<String, dynamic> map) {
-    return Comment(
+    return Comment( 
       uid: map['uid'] as String,
       content: map['content'] as String,
       timestamp: DateTime.parse(map['timestamp'] as String),

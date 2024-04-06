@@ -75,7 +75,7 @@ class AuthServices {
     } on FirebaseAuthException catch (e) {
       print('Error in signup method in AuthServices.dart file');
       throw Exception(e.code);
-    }
+    } 
   }
 
   // sign out or log out
